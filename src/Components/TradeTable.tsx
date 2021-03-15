@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table } from 'react-bootstrap'
-import { MarketPrices, TradeRow } from './Types'
+import { MarketPrices, TradeRow } from '../Types'
 
 export const TradeTable = ({
   tradeRows,

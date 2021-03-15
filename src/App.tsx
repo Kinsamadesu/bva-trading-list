@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Col, Container, Navbar, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { MarketPrices, UserDatas } from './Types'
 import './App.css'
-import { TradeTable } from './TradeTable'
+import { TradeTable } from './Components/TradeTable'
+import TopBar from './Components/TopBar'
 
 function App() {
   const [userDatas, setUserDatas] = useState<UserDatas>()
   const [marketPrices, setMarketPrices] = useState<MarketPrices>()
+  const [theme, setTheme] = useState('light')
+
   const refreshData = useCallback(async () => {
     const data = await fetch(
       'https://bitcoinvsaltcoins.com/api/useropentradedsignals?key=60495594c34e57006886477a'
@@ -20,7 +23,26 @@ function App() {
 
   useEffect(() => {
     refreshData()
+    const theme = localStorage.getItem('theme')
+    if (theme) {
+      setTheme(theme)
+    }
   }, [refreshData])
+
+  useEffect(() => {
+    const el = document.querySelector('#theme')
+    if (el) {
+      localStorage.setItem('theme', theme)
+      ;(el as HTMLLinkElement).href = `bootstrap_${theme}.css`
+    }
+  }, [theme])
+
+  const setDark = () => {
+    setTheme('dark')
+  }
+  const setLight = () => {
+    setTheme('light')
+  }
 
   const strats: string[] = []
   const stratsView: JSX.Element[] = []
@@ -55,9 +77,11 @@ function App() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" fixed="top">
-        <Navbar.Brand>BVA Trading list</Navbar.Brand>
-      </Navbar>
+      <TopBar
+        theme={theme}
+        setDarkCallback={setDark}
+        setLightCallback={setLight}
+      ></TopBar>
       <Container fluid>{stratsView}</Container>
     </>
   )
