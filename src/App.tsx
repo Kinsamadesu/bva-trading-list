@@ -5,36 +5,49 @@ import './App.css'
 import { TradeTable } from './Components/TradeTable'
 import TopBar from './Components/TopBar'
 import Filters from './Components/Filters'
+import UserID from './Components/UserID'
 
 function App() {
   const [userDatas, setUserDatas] = useState<UserDatas>()
+  const [userID, setUserID] = useState<string>()
   const [marketPrices, setMarketPrices] = useState<MarketPrices>()
   const [filter, setFilter] = useState('all')
   const [theme, setTheme] = useState('dark')
 
   const refreshData = useCallback(async () => {
-    const data = await fetch(
-      'https://bitcoinvsaltcoins.com/api/usertradedsignals?userid=1607'
-    )
-    const parsedData = await data.json()
-    const prices = await fetch('https://bitcoinvsaltcoins.com/api/prices')
-    const parcedPrices = await prices.json()
-    setUserDatas(parsedData)
-    setMarketPrices(parcedPrices)
-  }, [])
+    if (userID !== undefined) {
+      const data = await fetch(
+        `https://bitcoinvsaltcoins.com/api/usertradedsignals?userid=${userID}`
+      )
+      const parsedData = await data.json()
+      const prices = await fetch('https://bitcoinvsaltcoins.com/api/prices')
+      const parcedPrices = await prices.json()
+      setUserDatas(parsedData)
+      setMarketPrices(parcedPrices)
+    }
+  }, [userID])
 
   useEffect(() => {
-    refreshData()
+    const userid = localStorage.getItem('userID')
+    if (userid) {
+      setUserID(userid)
+    }
     const theme = localStorage.getItem('theme')
     if (theme) {
       setTheme(theme)
     }
-
     const filter = localStorage.getItem('filter')
     if (filter) {
       setFilter(filter)
     }
-  }, [refreshData])
+  }, [])
+
+  useEffect(() => {
+    if (userID !== undefined) {
+      localStorage.setItem('userID', userID)
+    }
+    refreshData()
+  }, [userID, refreshData])
 
   useEffect(() => {
     const el = document.querySelector('#theme')
@@ -110,14 +123,25 @@ function App() {
   return (
     <>
       <TopBar
+        userID={userID}
         theme={theme}
         setDarkCallback={setDark}
         setLightCallback={setLight}
         refreshCallback={refreshData}
+        setUserIDCallback={setUserID}
       ></TopBar>
       <Container fluid>
-        <Filters setFilterCallback={setFilter}></Filters>
-        {stratsView}
+        {userID !== undefined && (
+          <Filters setFilterCallback={setFilter}></Filters>
+        )}
+        {userID === undefined && (
+          <Row className="mt-5">
+            <Col xs={{ span: 6, offset: 3 }}>
+              <UserID setUserIDCallback={setUserID}></UserID>
+            </Col>
+          </Row>
+        )}
+        {userID !== undefined && stratsView}
       </Container>
     </>
   )
