@@ -86,6 +86,12 @@ function App() {
           }
           return false
         }
+        if (filter === 'closed') {
+          if (r.buy_price !== null && r.sell_price !== null) {
+            return true
+          }
+          return false
+        }
         return true
       })
       rows.forEach((r) => {
@@ -98,6 +104,13 @@ function App() {
             0.2
           ).toString()
         }
+      })
+      rows.sort((a, b) => {
+        if (filter === 'closed' && a.sell_time && b.sell_time) {
+          if (parseFloat(a.sell_time) > parseFloat(b.sell_time)) return -1
+          if (parseFloat(a.sell_time) < parseFloat(b.sell_time)) return 1
+        }
+        return 0
       })
       if (rows.length > 0) {
         stratsView.push(

@@ -14,6 +14,7 @@ export type TradeRow = {
   sell_price: string | null
   pnl: string | null
   qty: string
+  yo: boolean
 }
 
 export type MarketPrices = {

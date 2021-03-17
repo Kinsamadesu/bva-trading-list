@@ -6,6 +6,9 @@ const Filters = ({ setFilterCallback }: { setFilterCallback: Function }) => {
     <Row>
       <Col>
         <Button onClick={() => setFilterCallback('all')}>All</Button>
+        <Button onClick={() => setFilterCallback('closed')} className="ml-2">
+          Closed
+        </Button>
         <Button onClick={() => setFilterCallback('opened')} className="ml-2">
           Opened
         </Button>
