@@ -1,14 +1,8 @@
 import React from 'react'
 import { Table } from 'react-bootstrap'
-import { MarketPrices, TradeRow } from '../Types'
+import { TradeRow } from '../Types'
 
-export const TradeTable = ({
-  tradeRows,
-  marketPrices,
-}: {
-  tradeRows: TradeRow[]
-  marketPrices: MarketPrices
-}) => {
+export const TradeTable = ({ tradeRows }: { tradeRows: TradeRow[] }) => {
   const dateFormat = Intl.DateTimeFormat(undefined, {
     day: '2-digit',
     month: '2-digit',
@@ -18,7 +12,7 @@ export const TradeTable = ({
   })
 
   const listView = tradeRows.map((row: TradeRow) => {
-    const date =
+    const entryDate =
       row.type === 'LONG'
         ? row.buy_time
           ? row.buy_time
@@ -26,26 +20,29 @@ export const TradeTable = ({
         : row.sell_time
         ? row.sell_time
         : ''
+
+    const pnl = row.pnl ? Math.round(parseFloat(row.pnl) * 100) / 100 : 0
+
     return (
       <tr key={row.id}>
-        <td>{dateFormat.format(new Date(parseInt(date)))}</td>
+        <td>{dateFormat.format(new Date(parseInt(entryDate)))}</td>
         <td>{row.type}</td>
         <td>{row.pair}</td>
-        <td>{row.type === 'LONG' ? row.buy_price : row.sell_price}</td>
-        <td>{marketPrices[row.pair]}</td>
+        <td style={{ color: pnl > 0 ? 'green' : pnl < 0 ? 'red' : 'white' }}>
+          {row.pnl ? `${pnl}%` : '-'}
+        </td>
       </tr>
     )
   })
 
   return (
-    <Table striped responsive="md">
+    <Table className="tradeTable" striped responsive="md">
       <thead>
         <tr>
           <th>Entered</th>
           <th>Type</th>
           <th>Pair</th>
-          <th>Entered Price</th>
-          <th>Market Price</th>
+          <th>PnL</th>
         </tr>
       </thead>
       <tbody>{listView}</tbody>

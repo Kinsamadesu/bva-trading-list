@@ -26,10 +26,11 @@ input {
   background: transparent;
   border: 1px solid #fff;
   height: 28px;
+  margin: 0;
 }
 
 .toggle-item:before {
-  content: "";
+  content: '';
   position: absolute;
   display: block;
   transition: all 0.2s ease;
@@ -45,4 +46,8 @@ input {
 
 #transparent:checked + label:before {
   transform: translateX(36px);
+}
+
+.tradeTable {
+  text-align: center;
 }

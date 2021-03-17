@@ -12,8 +12,6 @@ export type TradeRow = {
   sell_time: string | null
   buy_price: string | null
   sell_price: string | null
-}
-
-export type MarketPrices = {
-  [key: string]: number
+  pnl: string | null
+  qty: string
 }
