@@ -40,7 +40,7 @@ function App() {
     const el = document.querySelector('#theme')
     if (el) {
       localStorage.setItem('theme', theme)
-      ;(el as HTMLLinkElement).href = `bootstrap_${theme}.css`
+      ;(el as HTMLLinkElement).href = `${process.env.PUBLIC_URL}/bootstrap_${theme}.css`
     }
   }, [theme])
 
