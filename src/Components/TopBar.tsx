@@ -6,7 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import { Form, Navbar } from 'react-bootstrap'
+import { Button, Form, Navbar } from 'react-bootstrap'
 
 const TopBar = ({
   theme,
@@ -45,16 +45,16 @@ const TopBar = ({
         </small>
       </Navbar.Brand>
       <Form inline>
-        <a href="#" onClick={() => refreshCallback()}>
+        <Button variant="link" onClick={() => refreshCallback()}>
           <FontAwesomeIcon icon={faSyncAlt} />
-        </a>
-        <a href="#" onClick={() => toggleTheme()}>
+        </Button>
+        <Button variant="link" onClick={() => toggleTheme()}>
           {theme === 'dark' && <FontAwesomeIcon icon={faSun} />}
           {theme === 'light' && <FontAwesomeIcon icon={faMoon} />}
-        </a>
-        <a href="#" onClick={() => setUserIDCallback(undefined)}>
+        </Button>
+        <Button variant="link" onClick={() => setUserIDCallback(undefined)}>
           <FontAwesomeIcon icon={faCog} />
-        </a>
+        </Button>
       </Form>
     </Navbar>
   )

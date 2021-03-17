@@ -59,7 +59,8 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('filter', filter)
-  }, [filter])
+    refreshData()
+  }, [filter, refreshData])
 
   const setDark = () => {
     setTheme('dark')
