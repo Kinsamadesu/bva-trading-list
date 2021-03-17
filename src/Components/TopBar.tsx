@@ -1,13 +1,18 @@
+import { faMoon, faSun, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
 import { Form, Navbar } from 'react-bootstrap'
 
 const TopBar = ({
   theme,
   setDarkCallback,
   setLightCallback,
+  refreshCallback,
 }: {
   theme: string
   setDarkCallback: Function
   setLightCallback: Function
+  refreshCallback: Function
 }) => {
   const toggleTheme = () => {
     if (theme === 'dark') {
@@ -22,19 +27,17 @@ const TopBar = ({
       bg="dark"
       variant="dark"
       fixed="top"
-      className="justify-content-between"
+      className="topbar justify-content-between"
     >
       <Navbar.Brand>BVA Trading list</Navbar.Brand>
       <Form inline>
-        <div className="toggle transparent">
-          <input
-            id="transparent"
-            type="checkbox"
-            checked={theme === 'dark'}
-            onChange={() => toggleTheme()}
-          />
-          <label className="toggle-item" htmlFor="transparent"></label>
-        </div>
+        <a href="#" onClick={() => refreshCallback()}>
+          <FontAwesomeIcon icon={faSyncAlt} />
+        </a>
+        <a href="#" onClick={() => toggleTheme()}>
+          {theme === 'dark' && <FontAwesomeIcon icon={faSun} />}
+          {theme === 'light' && <FontAwesomeIcon icon={faMoon} />}
+        </a>
       </Form>
     </Navbar>
   )

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { UserDatas } from './Types'
+import { MarketPrices, UserDatas } from './Types'
 import './App.css'
 import { TradeTable } from './Components/TradeTable'
 import TopBar from './Components/TopBar'
@@ -8,6 +8,7 @@ import Filters from './Components/Filters'
 
 function App() {
   const [userDatas, setUserDatas] = useState<UserDatas>()
+  const [marketPrices, setMarketPrices] = useState<MarketPrices>()
   const [filter, setFilter] = useState('all')
   const [theme, setTheme] = useState('dark')
 
@@ -16,7 +17,10 @@ function App() {
       'https://bitcoinvsaltcoins.com/api/usertradedsignals?userid=1607'
     )
     const parsedData = await data.json()
+    const prices = await fetch('https://bitcoinvsaltcoins.com/api/prices')
+    const parcedPrices = await prices.json()
     setUserDatas(parsedData)
+    setMarketPrices(parcedPrices)
   }, [])
 
   useEffect(() => {
@@ -71,6 +75,17 @@ function App() {
         }
         return true
       })
+      rows.forEach((r) => {
+        if (r.pnl === null && r.buy_price && marketPrices) {
+          const marketPrice = marketPrices[r.pair]
+          r.pnl = (
+            ((marketPrice - parseFloat(r.buy_price)) /
+              parseFloat(r.buy_price)) *
+              100 -
+            0.2
+          ).toString()
+        }
+      })
       if (rows.length > 0) {
         stratsView.push(
           <Row key={s} className="mt-4">
@@ -98,6 +113,7 @@ function App() {
         theme={theme}
         setDarkCallback={setDark}
         setLightCallback={setLight}
+        refreshCallback={refreshData}
       ></TopBar>
       <Container fluid>
         <Filters setFilterCallback={setFilter}></Filters>

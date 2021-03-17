@@ -21,7 +21,7 @@ export const TradeTable = ({ tradeRows }: { tradeRows: TradeRow[] }) => {
         ? row.sell_time
         : ''
 
-    const pnl = row.pnl ? Math.round(parseFloat(row.pnl) * 100) / 100 : 0
+    const pnl = row.pnl ? Math.round(parseFloat(row.pnl) * 1000) / 1000 : 0
 
     return (
       <tr key={row.id}>

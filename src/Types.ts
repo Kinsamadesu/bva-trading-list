@@ -15,3 +15,7 @@ export type TradeRow = {
   pnl: string | null
   qty: string
 }
+
+export type MarketPrices = {
+  [key: string]: number
+}
