@@ -8,4 +8,15 @@ body {
 
 .topbar button {
   font-size: 1.8em;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+button {
+  border: 0 !important;
+}
+
+.topbar {
+  border: 0;
+  padding: 0 1rem;
 }
