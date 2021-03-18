@@ -38,12 +38,7 @@ const TopBar = ({
       fixed="top"
       className="topbar justify-content-between"
     >
-      <Navbar.Brand>
-        BVA Trading list
-        <small className="ml-2 text-muted">
-          {userID !== undefined ? ` (${userID})` : ''}
-        </small>
-      </Navbar.Brand>
+      <Navbar.Brand>BVA Trading list</Navbar.Brand>
       <Form inline>
         <Button variant="link" onClick={() => refreshCallback()}>
           <FontAwesomeIcon icon={faSyncAlt} />
