@@ -96,12 +96,14 @@ function App() {
         return true
       })
       rows.forEach((r) => {
-        if (r.pnl === null && r.buy_price && marketPrices) {
+        let price = r.buy_price
+        if (r.type !== 'LONG') {
+          price = r.sell_price
+        }
+        if (r.pnl === null && price && marketPrices) {
           const marketPrice = marketPrices[r.pair]
           r.pnl = (
-            ((marketPrice - parseFloat(r.buy_price)) /
-              parseFloat(r.buy_price)) *
-              100 -
+            ((marketPrice - parseFloat(price)) / parseFloat(price)) * 100 -
             0.2
           ).toString()
         }
