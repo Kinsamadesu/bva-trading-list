@@ -79,6 +79,7 @@ function App() {
     })
 
     strats.sort().forEach((s) => {
+      let sPNL = 0
       let rows = userDatas.rows.filter((r) => r.stratname === s)
       rows = rows.filter((r) => {
         if (filter === 'opened') {
@@ -106,6 +107,8 @@ function App() {
             ((marketPrice - parseFloat(price)) / parseFloat(price)) * 100 -
             0.2
           ).toString()
+        } else if (r.pnl !== null) {
+          sPNL += parseFloat(r.pnl)
         }
       })
       rows.sort((a, b) => {
@@ -121,7 +124,21 @@ function App() {
             <Col>
               <Row>
                 <Col>
-                  <h5>{s}</h5>
+                  <h5>
+                    {s}
+                    <small
+                      style={{ marginLeft: '15px' }}
+                      className={
+                        sPNL > 0
+                          ? 'text-success'
+                          : sPNL < 0
+                          ? 'text-danger'
+                          : ''
+                      }
+                    >
+                      {Math.round(sPNL * 1000) / 1000}%
+                    </small>
+                  </h5>
                 </Col>
               </Row>
               <Row>
