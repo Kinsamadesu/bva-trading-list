@@ -28,7 +28,7 @@ export const TradeTable = ({ tradeRows }: { tradeRows: TradeRow[] }) => {
         <td>{dateFormat.format(new Date(parseInt(entryDate)))}</td>
         <td>{row.type}</td>
         <td>{row.pair}</td>
-        <td style={{ color: pnl > 0 ? 'green' : pnl < 0 ? 'red' : 'white' }}>
+        <td className={pnl > 0 ? 'text-success' : pnl < 0 ? 'text-danger' : ''}>
           {row.pnl ? `${pnl}%` : '-'}
         </td>
       </tr>
