@@ -20,3 +20,31 @@ button {
   border: 0;
   padding: 0 1rem;
 }
+
+#stratFilter {
+  z-index: 11;
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  top: 100vh;
+  max-height: 40vh;
+  margin: 0;
+  box-shadow: 0px -3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+}
+
+#stratFilter > .col {
+  padding: 0;
+}
+
+#stratFilter .form-group {
+  margin: 0;
+}
+
+#dismissArea {
+  z-index: 10;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}

@@ -20,3 +20,8 @@ export type TradeRow = {
 export type MarketPrices = {
   [key: string]: number
 }
+
+export type AllowedStrat = {
+  strat: string
+  allowed: boolean
+}

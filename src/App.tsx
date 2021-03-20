@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { MarketPrices, UserDatas } from './Types'
+import { AllowedStrat, MarketPrices, UserDatas } from './Types'
 import './App.css'
 import { TradeTable } from './Components/TradeTable'
 import TopBar from './Components/TopBar'
 import Filters from './Components/Filters'
 import UserID from './Components/UserID'
+import StratFilter from './Components/StratFilter'
+import DismissArea from './Components/DismissArea'
 
 function App() {
   const [userDatas, setUserDatas] = useState<UserDatas>()
@@ -13,6 +15,12 @@ function App() {
   const [marketPrices, setMarketPrices] = useState<MarketPrices>()
   const [filter, setFilter] = useState('all')
   const [theme, setTheme] = useState('dark')
+  const [openFilter, setOpenFilter] = useState(false)
+  const [allowedStrats, setAllowedStrats] = useState<AllowedStrat[]>([])
+
+  const onDismiss = () => {
+    setOpenFilter(false)
+  }
 
   const refreshData = useCallback(async () => {
     if (userID !== undefined) {
@@ -40,6 +48,10 @@ function App() {
     if (filter) {
       setFilter(filter)
     }
+    const allowedStrats = localStorage.getItem('allowedSrats')
+    if (allowedStrats) {
+      setAllowedStrats(JSON.parse(allowedStrats))
+    }
   }, [])
 
   useEffect(() => {
@@ -61,6 +73,10 @@ function App() {
     localStorage.setItem('filter', filter)
     refreshData()
   }, [filter, refreshData])
+
+  useEffect(() => {
+    localStorage.setItem('allowedSrats', JSON.stringify(allowedStrats))
+  }, [allowedStrats])
 
   const setDark = () => {
     setTheme('dark')
@@ -84,6 +100,12 @@ function App() {
       let sPNL = 0
       let rows = userDatas.rows.filter((r) => r.stratname === s)
       rows = rows.filter((r) => {
+        const strat = allowedStrats.find((st) => r.stratname === st.strat)
+        if (strat) {
+          if (!strat.allowed) {
+            return false
+          }
+        }
         if (filter === 'opened') {
           if (r.buy_price === null || r.sell_price === null) {
             return true
@@ -201,7 +223,10 @@ function App() {
       ></TopBar>
       <Container fluid>
         {userID !== undefined && (
-          <Filters setFilterCallback={setFilter}></Filters>
+          <Filters
+            openFilterCallback={setOpenFilter}
+            setFilterCallback={setFilter}
+          ></Filters>
         )}
         {userID === undefined && (
           <Row className="mt-5">
@@ -212,6 +237,16 @@ function App() {
         )}
         {userID !== undefined && stratsView}
       </Container>
+      <DismissArea
+        visible={openFilter}
+        onDismissCallback={onDismiss}
+      ></DismissArea>
+      <StratFilter
+        setAllowedStratsCallback={setAllowedStrats}
+        allowedStrats={allowedStrats}
+        strats={strats}
+        opened={openFilter}
+      ></StratFilter>
     </>
   )
 }
