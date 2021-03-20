@@ -139,7 +139,10 @@ function App() {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col
+                  style={{ display: 'flex' }}
+                  className="justify-content-between"
+                >
                   <span
                     className={
                       tPNL > 0 ? 'text-success' : tPNL < 0 ? 'text-danger' : ''
@@ -147,23 +150,31 @@ function App() {
                   >
                     PnL: {Math.round(tPNL * 1000) / 1000}%
                   </span>
-                </Col>
-                <Col className="text-right">
-                  <small
-                    className={
-                      lPNL > 0 ? 'text-success' : lPNL < 0 ? 'text-danger' : ''
-                    }
-                  >
-                    long: {Math.round(lPNL * 1000) / 1000}%
-                  </small>
-                  &nbsp;/&nbsp;
-                  <small
-                    className={
-                      sPNL > 0 ? 'text-success' : sPNL < 0 ? 'text-danger' : ''
-                    }
-                  >
-                    short: {Math.round(sPNL * 1000) / 1000}%
-                  </small>
+                  <span>
+                    <small
+                      className={
+                        lPNL > 0
+                          ? 'text-success'
+                          : lPNL < 0
+                          ? 'text-danger'
+                          : ''
+                      }
+                    >
+                      long: {Math.round(lPNL * 1000) / 1000}%
+                    </small>
+                    &nbsp;/&nbsp;
+                    <small
+                      className={
+                        sPNL > 0
+                          ? 'text-success'
+                          : sPNL < 0
+                          ? 'text-danger'
+                          : ''
+                      }
+                    >
+                      short: {Math.round(sPNL * 1000) / 1000}%
+                    </small>
+                  </span>
                 </Col>
               </Row>
               <Row>
