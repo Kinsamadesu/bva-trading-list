@@ -79,6 +79,8 @@ function App() {
     })
 
     strats.sort().forEach((s) => {
+      let tPNL = 0
+      let lPNL = 0
       let sPNL = 0
       let rows = userDatas.rows.filter((r) => r.stratname === s)
       rows = rows.filter((r) => {
@@ -96,6 +98,7 @@ function App() {
         }
         return true
       })
+
       rows.forEach((r) => {
         let price = r.buy_price
         if (r.type !== 'LONG') {
@@ -107,10 +110,18 @@ function App() {
             ((marketPrice - parseFloat(price)) / parseFloat(price)) * 100 -
             0.2
           ).toString()
-        } else if (r.pnl !== null) {
+        }
+
+        if (r.pnl) {
+          tPNL += parseFloat(r.pnl)
+        }
+        if (r.pnl && r.type === 'LONG') {
+          lPNL += parseFloat(r.pnl)
+        } else if (r.pnl && r.type === 'SHORT') {
           sPNL += parseFloat(r.pnl)
         }
       })
+
       rows.sort((a, b) => {
         if (filter === 'closed' && a.sell_time && b.sell_time) {
           if (parseFloat(a.sell_time) > parseFloat(b.sell_time)) return -1
@@ -124,21 +135,35 @@ function App() {
             <Col>
               <Row>
                 <Col>
-                  <h5>
-                    {s}
-                    <small
-                      style={{ marginLeft: '15px' }}
-                      className={
-                        sPNL > 0
-                          ? 'text-success'
-                          : sPNL < 0
-                          ? 'text-danger'
-                          : ''
-                      }
-                    >
-                      {Math.round(sPNL * 1000) / 1000}%
-                    </small>
-                  </h5>
+                  <h5>{s}</h5>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <span
+                    className={
+                      tPNL > 0 ? 'text-success' : tPNL < 0 ? 'text-danger' : ''
+                    }
+                  >
+                    PnL: {Math.round(tPNL * 1000) / 1000}%
+                  </span>
+                </Col>
+                <Col className="text-right">
+                  <small
+                    className={
+                      lPNL > 0 ? 'text-success' : lPNL < 0 ? 'text-danger' : ''
+                    }
+                  >
+                    long: {Math.round(lPNL * 1000) / 1000}%
+                  </small>
+                  &nbsp;/&nbsp;
+                  <small
+                    className={
+                      sPNL > 0 ? 'text-success' : sPNL < 0 ? 'text-danger' : ''
+                    }
+                  >
+                    short: {Math.round(sPNL * 1000) / 1000}%
+                  </small>
                 </Col>
               </Row>
               <Row>
