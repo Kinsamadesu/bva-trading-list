@@ -1,7 +1,13 @@
 import React from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 
-const Filters = ({ setFilterCallback }: { setFilterCallback: Function }) => {
+const Filters = ({
+  setFilterCallback,
+  openFilterCallback,
+}: {
+  setFilterCallback: Function
+  openFilterCallback: Function
+}) => {
   return (
     <Row>
       <Col>
@@ -11,6 +17,9 @@ const Filters = ({ setFilterCallback }: { setFilterCallback: Function }) => {
         </Button>
         <Button onClick={() => setFilterCallback('opened')} className="ml-2">
           Opened
+        </Button>
+        <Button onClick={() => openFilterCallback(true)} className="ml-2">
+          Filter
         </Button>
       </Col>
     </Row>
