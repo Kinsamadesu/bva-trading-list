@@ -62,7 +62,7 @@ const SideMenu = ({
           Trading list
         </ListGroup.Item>
         <ListGroup.Item onClick={() => setViewCallback('gains')}>
-          Gains
+          Daily stats
         </ListGroup.Item>
       </ListGroup>
     </div>

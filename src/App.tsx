@@ -55,6 +55,10 @@ function App() {
     }
   }, [theme])
 
+  useEffect(() => {
+    setSideMenuOpened(false)
+  }, [view])
+
   const setDark = () => {
     setTheme('dark')
   }
