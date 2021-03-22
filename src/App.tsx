@@ -6,6 +6,7 @@ import TopBar from './Components/TopBar'
 import UserID from './Components/UserID'
 import Trading from './Pages/Trading'
 import SideMenu from './Components/SideMenu'
+import Gains from './Pages/Gains'
 
 function App() {
   const [userDatas, setUserDatas] = useState<UserDatas>()
@@ -85,8 +86,11 @@ function App() {
           </Row>
         </Container>
       )}
-      {userID && userDatas && marketPrices && view == 'trading' && (
+      {userID && userDatas && marketPrices && view === 'trading' && (
         <Trading userDatas={userDatas} marketPrices={marketPrices}></Trading>
+      )}
+      {userID && userDatas && marketPrices && view === 'gains' && (
+        <Gains userDatas={userDatas} marketPrices={marketPrices}></Gains>
       )}
     </>
   )
