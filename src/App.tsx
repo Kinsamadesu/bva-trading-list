@@ -5,12 +5,15 @@ import './App.css'
 import TopBar from './Components/TopBar'
 import UserID from './Components/UserID'
 import Trading from './Pages/Trading'
+import SideMenu from './Components/SideMenu'
 
 function App() {
   const [userDatas, setUserDatas] = useState<UserDatas>()
   const [userID, setUserID] = useState<string>()
   const [marketPrices, setMarketPrices] = useState<MarketPrices>()
   const [theme, setTheme] = useState('dark')
+  const [view, setView] = useState('trading')
+  const [sideMenuOpened, setSideMenuOpened] = useState(false)
 
   const refreshData = useCallback(async () => {
     if (userID !== undefined) {
@@ -61,13 +64,18 @@ function App() {
   return (
     <>
       <TopBar
-        userID={userID}
+        openSideMenuCallback={setSideMenuOpened}
+        refreshCallback={refreshData}
+      ></TopBar>
+      <SideMenu
+        sideMenuOpened={sideMenuOpened}
         theme={theme}
+        openSideMenuCallback={setSideMenuOpened}
         setDarkCallback={setDark}
         setLightCallback={setLight}
-        refreshCallback={refreshData}
         setUserIDCallback={setUserID}
-      ></TopBar>
+        setViewCallback={setView}
+      ></SideMenu>
       {userID === undefined && (
         <Container fluid>
           <Row className="mt-5">
@@ -77,7 +85,7 @@ function App() {
           </Row>
         </Container>
       )}
-      {userID && userDatas && marketPrices && (
+      {userID && userDatas && marketPrices && view == 'trading' && (
         <Trading userDatas={userDatas} marketPrices={marketPrices}></Trading>
       )}
     </>

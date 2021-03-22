@@ -1,36 +1,14 @@
-import {
-  faCog,
-  faMoon,
-  faSun,
-  faSyncAlt,
-} from '@fortawesome/free-solid-svg-icons'
+import { faBars, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
 import { Button, Form, Navbar } from 'react-bootstrap'
 
 const TopBar = ({
-  theme,
-  userID,
-  setDarkCallback,
-  setLightCallback,
   refreshCallback,
-  setUserIDCallback,
+  openSideMenuCallback,
 }: {
-  theme: string
-  userID?: string
-  setDarkCallback: Function
-  setLightCallback: Function
   refreshCallback: Function
-  setUserIDCallback: Function
+  openSideMenuCallback: Function
 }) => {
-  const toggleTheme = () => {
-    if (theme === 'dark') {
-      setLightCallback()
-    } else {
-      setDarkCallback()
-    }
-  }
-
   return (
     <Navbar
       bg="dark"
@@ -43,12 +21,8 @@ const TopBar = ({
         <Button variant="link" onClick={() => refreshCallback()}>
           <FontAwesomeIcon icon={faSyncAlt} />
         </Button>
-        <Button variant="link" onClick={() => toggleTheme()}>
-          {theme === 'dark' && <FontAwesomeIcon icon={faSun} />}
-          {theme === 'light' && <FontAwesomeIcon icon={faMoon} />}
-        </Button>
-        <Button variant="link" onClick={() => setUserIDCallback(undefined)}>
-          <FontAwesomeIcon icon={faCog} />
+        <Button variant="link" onClick={() => openSideMenuCallback(true)}>
+          <FontAwesomeIcon icon={faBars} />
         </Button>
       </Form>
     </Navbar>
