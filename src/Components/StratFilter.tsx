@@ -1,21 +1,21 @@
 import React, { ChangeEvent } from 'react'
 import { Col, Row, ListGroup, Form } from 'react-bootstrap'
-import { AllowedStrat } from '../Types'
+import { AllowedStrat, TradeStrat } from '../Types'
 
 const StratFilter = ({
-  strats,
+  tradeStrats,
   opened,
   allowedStrats,
   setAllowedStratsCallback,
 }: {
-  strats: string[]
+  tradeStrats: TradeStrat[]
   opened: boolean
   allowedStrats: AllowedStrat[]
   setAllowedStratsCallback: Function
 }) => {
-  const stratsView = strats.map((s) => {
+  const stratsView = tradeStrats.map((t) => {
     let checked = false
-    const strat = allowedStrats.find((strat) => strat.strat === s)
+    const strat = allowedStrats.find((strat) => strat.strat === t.stratname)
     if (strat) {
       if (strat.allowed) {
         checked = true
@@ -28,18 +28,21 @@ const StratFilter = ({
       if (strat) {
         strat.allowed = e.currentTarget.checked
       } else {
-        allowedStrats.push({ strat: s, allowed: e.currentTarget.checked })
+        allowedStrats.push({
+          strat: t.stratname,
+          allowed: e.currentTarget.checked,
+        })
       }
       setAllowedStratsCallback(allowedStrats.slice())
     }
 
     return (
-      <ListGroup.Item key={s}>
-        <Form.Group controlId={`form_${s}`}>
+      <ListGroup.Item key={t.stratid}>
+        <Form.Group controlId={`form_${t.stratid}`}>
           <Form.Check
             checked={checked}
             type="checkbox"
-            label={`${s}`}
+            label={`${t.stratname}`}
             onChange={(e) => updateStrat(e)}
           />
         </Form.Group>

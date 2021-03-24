@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { MarketPrices, UserDatas } from './Types'
+import { MarketPrices, TradeStrat, UserDatas } from './Types'
 import './App.css'
 import TopBar from './Components/TopBar'
 import UserID from './Components/UserID'
@@ -10,6 +10,7 @@ import Gains from './Pages/Gains'
 
 function App() {
   const [userDatas, setUserDatas] = useState<UserDatas>()
+  const [tradeStrats, setTradeStrats] = useState<TradeStrat[]>()
   const [userID, setUserID] = useState<string>()
   const [marketPrices, setMarketPrices] = useState<MarketPrices>()
   const [theme, setTheme] = useState('dark')
@@ -59,6 +60,36 @@ function App() {
     setSideMenuOpened(false)
   }, [view])
 
+  useEffect(() => {
+    if (userDatas) {
+      const tradeStrats: TradeStrat[] = []
+      userDatas.rows.forEach((r) => {
+        let currentStrat: TradeStrat | undefined = tradeStrats.find(
+          (s) => r.stratid === s.stratid
+        )
+        if (!currentStrat) {
+          currentStrat = {
+            stratid: r.stratid,
+            stratname: r.stratname,
+            rows: [],
+          }
+          tradeStrats.push(currentStrat)
+        }
+        currentStrat.rows.push(r)
+      })
+
+      tradeStrats.sort((a, b) => {
+        if (parseFloat(a.stratid) < parseFloat(b.stratid)) return -1
+        if (parseFloat(a.stratid) > parseFloat(b.stratid)) return 1
+        return 0
+      })
+
+      console.log(tradeStrats)
+
+      setTradeStrats(tradeStrats)
+    }
+  }, [userDatas])
+
   const setDark = () => {
     setTheme('dark')
   }
@@ -90,11 +121,14 @@ function App() {
           </Row>
         </Container>
       )}
-      {userID && userDatas && marketPrices && view === 'trading' && (
-        <Trading userDatas={userDatas} marketPrices={marketPrices}></Trading>
+      {userID && tradeStrats && marketPrices && view === 'trading' && (
+        <Trading
+          tradeStrats={tradeStrats}
+          marketPrices={marketPrices}
+        ></Trading>
       )}
-      {userID && userDatas && marketPrices && view === 'gains' && (
-        <Gains userDatas={userDatas} marketPrices={marketPrices}></Gains>
+      {userID && tradeStrats && marketPrices && view === 'gains' && (
+        <Gains tradeStrats={tradeStrats} marketPrices={marketPrices}></Gains>
       )}
     </>
   )

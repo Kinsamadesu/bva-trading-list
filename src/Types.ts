@@ -2,6 +2,12 @@ export type UserDatas = {
   rows: TradeRow[]
 }
 
+export type TradeStrat = {
+  stratid: string
+  stratname: string
+  rows: TradeRow[]
+}
+
 export type TradeRow = {
   id: string
   stratid: string
