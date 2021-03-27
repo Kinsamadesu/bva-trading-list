@@ -84,8 +84,6 @@ function App() {
         return 0
       })
 
-      console.log(tradeStrats)
-
       setTradeStrats(tradeStrats)
     }
   }, [userDatas])
